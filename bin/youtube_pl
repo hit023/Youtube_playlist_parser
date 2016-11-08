@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+#file="settings_script"
+SCRIPT=$(readlink -f "$0")
+SCRIPTPATH=$(dirname "$SCRIPT")
+cat $SCRIPTPATH/../readme.txt
+path=~/Youtube_playlist_parser/settings_script.txt
+usr_input=""
+if [ ! -s "$path" ]	
+then
+	echo "Enter the path for the downloads directory:"
+	read usr_input
+	echo $usr_input >> $path
+	exit 0
+fi
+usrpath=$(head -n 1 "$path")
+concat_path="downloadpath="
+final_path=$concat_path$usrpath
+bestaud="--b="
+subs="--sub="
+while [[ $# -gt 1 ]]
+do
+key="$1"
+
+case $key in
+    -u|--URL)
+    url1="$2"
+    shift # past argument
+    ;;
+    -b)
+    ans1="$2"
+    shift
+    ;;	
+    -sub)
+    ans2="$2"
+    shift
+    ;;
+    *)
+            # unknown option
+    ;;
+esac
+shift # past argument or value
+done
+#echo URL  = "${url1}"
+
+url="${url1}"
+if [ -z "$url" ]
+then
+	echo "No url given"
+	exit 0
+fi
+finalaud=
+finalsub=
+if [ "${ans1}" == "yes" ]
+then
+	finalaud=$bestaud${ans1}
+fi 
+if [ "${ans2}" == "yes" ]
+then
+	finalsub=$subs${ans2}
+fi 
+concat_url="url="
+finalurl=$concat_url$url
+python3 $SCRIPTPATH/../soup1.py $finalurl $final_path $finalaud $finalsub
