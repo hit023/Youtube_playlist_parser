@@ -1,0 +1,12 @@
+#! /usr/bin/env bash
+# installs bs4(Beautiful Soup) for parsing HTML content using an xml('lxml') or html('html.parser') parser.
+# installs youtube_dl lirary for connecting and downloading YouTube Videos and related meta-data.
+# assumes you have Python3 installed
+SCRIPT=$(readlink -f "$0")
+SCRIPTPATH=$(dirname "$SCRIPT")
+sudo apt-get install python-bs4
+sudo curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-dl
+sudo chmod a+rx /usr/local/bin/youtube-dl
+echo "export PATH=$PATH:$SCRIPTPATH" >> ~/.bashrc
+sudo chmod 755 "$SCRIPTPATH/youtube_pl"
+echo "Installation successful. You may now run the project."
